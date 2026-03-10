@@ -1,0 +1,34 @@
+name: model-wine-quality
+on: [push]
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    # O container do CML já vem com Python e ferramentas de ML instaladas
+    container: docker://iterative/cml:0-dvc2-base1
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Treinar Modelo e Gerar Relatório
+        env:
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # 1. Instalar dependências (caso não estejam no container)
+          pip install pandas scikit-learn matplotlib seaborn numpy
+
+          # 2. Rodar o seu script de treino
+          python train.py
+
+          # 3. Criar o relatório CML (Markdown)
+          echo "## Métricas do Modelo" > report.md
+          cat metrics.txt >> report.md
+
+          echo "## Visualizações" >> report.md
+          echo "### Importância das Features" >> report.md
+          echo "![](./feature_importance.png)" >> report.md
+          
+          echo "### Resíduos" >> report.md
+          echo "![](./residuals.png)" >> report.md
+
+          # 4. Enviar o relatório como comentário no GitHub
+          cml send-comment report.md
