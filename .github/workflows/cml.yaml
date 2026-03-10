@@ -4,7 +4,7 @@ jobs:
   run:
     runs-on: ubuntu-latest
     # O container do CML já vem com Python e ferramentas de ML instaladas
-    container: docker://iterative/cml:0-dvc2-base1
+    container: docker://ghcr.io/iterative/cml:0-dvc2-base1
     steps:
       - name: Checkout do código
         uses: actions/checkout@v4
