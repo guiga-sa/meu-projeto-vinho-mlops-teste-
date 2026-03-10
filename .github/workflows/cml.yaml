@@ -19,16 +19,10 @@ jobs:
           # 2. Rodar o seu script de treino
           python train.py
 
-          # 3. Criar o relatório CML (Markdown)
           echo "## Métricas do Modelo" > report.md
           cat metrics.txt >> report.md
-
           echo "## Visualizações" >> report.md
-          echo "### Importância das Features" >> report.md
+          echo "### Importância" >> report.md
           echo "![](./feature_importance.png)" >> report.md
-          
-          echo "### Resíduos" >> report.md
-          echo "![](./residuals.png)" >> report.md
 
-          # 4. Enviar o relatório como comentário no GitHub
           cml send-comment report.md
